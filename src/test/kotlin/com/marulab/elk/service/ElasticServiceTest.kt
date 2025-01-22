@@ -3,19 +3,20 @@ package com.marulab.elk.service
 import com.marulab.elk.ApplicationTest
 import com.marulab.elk.dto.Author
 import com.marulab.elk.dto.Message
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
 import java.util.*
 
-class ElasticServiceTest : ApplicationTest {
+class ElasticServiceTest : ApplicationTest() {
 	@Autowired
 	lateinit var elasticService: ElasticService
 
 	@Test
 	fun `test save`() {
 		val result = elasticService.save(msg1)
-		println(result)
+		Assertions.assertEquals(msg1, result)
 	}
 
 	companion object {

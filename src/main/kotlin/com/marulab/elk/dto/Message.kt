@@ -3,6 +3,7 @@ package com.marulab.elk.dto
 import arrow.optics.optics
 import kotlinx.serialization.Serializable
 import org.springframework.data.annotation.Id
+import org.springframework.data.elasticsearch.annotations.DateFormat
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
@@ -19,7 +20,7 @@ data class Message(
 	val content: String,
 	@Field(type = FieldType.Nested, includeInParent = true)
 	val author: Author,
-	@Field(type = FieldType.Date)
+	@Field(type = FieldType.Date, pattern = ["yyyy-MM-dd'T'HH:mm:ss"], format = [DateFormat.date_hour_minute_second])
 	val createdDate: LocalDateTime
 ) {
 	companion object

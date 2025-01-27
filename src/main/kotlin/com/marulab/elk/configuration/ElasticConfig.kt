@@ -1,21 +1,27 @@
 package com.marulab.elk.configuration
 
+import com.marulab.elk.configuration.properties.ElasticProp
 import com.marulab.elk.repository.ElasticRepo
-import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties
+import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_NAME
+import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_PREFIX
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.elasticsearch.client.ClientConfiguration
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories
 
 @Configuration
+@EnableConfigurationProperties(ElasticProp::class)
 @EnableElasticsearchRepositories(basePackageClasses = [ElasticRepo::class])
+@ConditionalOnProperty(prefix = CONDITIONAL_PROPERTY_PREFIX, name = [CONDITIONAL_PROPERTY_NAME], havingValue = "true", matchIfMissing = false)
 class ElasticConfig(
-	private val elasticsearchProperties: ElasticsearchProperties
+	private val elasticsearchProperties: ElasticProp
 ) : ElasticsearchConfiguration() {
 
 	override fun clientConfiguration(): ClientConfiguration = ClientConfiguration
 		.builder()
-		.connectedTo(elasticsearchProperties.uris.joinToString(","))
+		.connectedTo(elasticsearchProperties.url)
 		.withBasicAuth(elasticsearchProperties.username, elasticsearchProperties.password)
 		.withConnectTimeout(elasticsearchProperties.connectionTimeout)
 		.withSocketTimeout(elasticsearchProperties.socketTimeout)

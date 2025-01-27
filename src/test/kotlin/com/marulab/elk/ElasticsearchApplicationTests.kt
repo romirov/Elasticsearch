@@ -13,5 +13,4 @@ class ElasticsearchApplicationTests {
 	@Test
 	fun contextLoads() {
 	}
-
 }

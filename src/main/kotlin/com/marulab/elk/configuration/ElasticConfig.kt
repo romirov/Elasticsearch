@@ -1,7 +1,6 @@
 package com.marulab.elk.configuration
 
 import com.marulab.elk.configuration.properties.ElasticProp
-import com.marulab.elk.repository.ElasticRepo
 import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_NAME
 import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_PREFIX
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -13,7 +12,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @Configuration
 @EnableConfigurationProperties(ElasticProp::class)
-@EnableElasticsearchRepositories(basePackageClasses = [ElasticRepo::class])
+@EnableElasticsearchRepositories(basePackages = ["com.marulab.elk.repository"])
 @ConditionalOnProperty(prefix = CONDITIONAL_PROPERTY_PREFIX, name = [CONDITIONAL_PROPERTY_NAME], havingValue = "true", matchIfMissing = false)
 class ElasticConfig(
 	private val elasticsearchProperties: ElasticProp

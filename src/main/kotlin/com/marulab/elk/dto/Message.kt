@@ -3,16 +3,19 @@ package com.marulab.elk.dto
 import arrow.optics.optics
 import kotlinx.serialization.Serializable
 import org.springframework.data.annotation.Id
-import org.springframework.data.elasticsearch.annotations.DateFormat
-import org.springframework.data.elasticsearch.annotations.Document
-import org.springframework.data.elasticsearch.annotations.Field
-import org.springframework.data.elasticsearch.annotations.FieldType
+import org.springframework.data.elasticsearch.annotations.*
 import java.time.LocalDateTime
 import java.util.*
 
 @Serializable
 @optics
 @Document(indexName = "messages")
+@Setting(
+	sortFields = [ "secondField", "firstField" ],
+	sortModes = [ Setting.SortMode.max, Setting.SortMode.min ],
+	sortOrders = [ Setting.SortOrder.desc, Setting.SortOrder.asc ],
+	sortMissingValues = [ Setting.SortMissing._last, Setting.SortMissing._first ]
+)
 data class Message(
 	@Id
 	val id: UUID,

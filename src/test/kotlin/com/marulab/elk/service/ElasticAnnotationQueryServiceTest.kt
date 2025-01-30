@@ -1,14 +1,8 @@
-//package com.marulab.elk.service
-//
-//import com.marulab.elk.ApplicationTest
-//import com.marulab.elk.dto.Author
-//import com.marulab.elk.dto.Message
-//import org.junit.jupiter.api.Assertions
-//import org.junit.jupiter.api.Test
-//import java.time.LocalDateTime
-//import java.util.*
-//
-//class ElasticServiceTest : ApplicationTest() {
+package com.marulab.elk.service
+
+import com.marulab.elk.ApplicationTest
+
+class ElasticAnnotationQueryServiceTest : ApplicationTest() {
 //
 //	@Test
 //	fun `test save`() {
@@ -73,4 +67,4 @@
 //		val msg2 = msg1.copy(id = id2, title = "testMessage2", content = "testContent2")
 //		val msg3 = msg1.copy(id = id3, title = "testMessage3", content = "testContent3")
 //	}
-//}
+}

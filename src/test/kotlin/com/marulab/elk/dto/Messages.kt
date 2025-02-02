@@ -41,4 +41,6 @@ object Messages {
 	val msg9 = Message(id9, "test", "test", author9, LocalDateTime.parse("2028-01-01T00:00:00", dateTimeFormatter))
 	val msg10 = Message(id10, "test", "test", author10, LocalDateTime.parse("2029-01-01T00:00:00", dateTimeFormatter))
 	val msg11 = Message(id11, "test", "test", author11, LocalDateTime.parse("2030-01-01T00:00:00", dateTimeFormatter))
+
+	val messages: List<Message> = listOf(msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8, msg9, msg10, msg11)
 }

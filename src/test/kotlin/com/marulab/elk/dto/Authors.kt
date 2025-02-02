@@ -12,4 +12,6 @@ object Authors {
 	val author9 = Author("firstName9", "lastName9")
 	val author10 = Author("firstName10", "lastName10")
 	val author11 = Author("firstName11", "lastName11")
+
+	val authors: List<Author> = listOf(author1, author2, author3, author4, author5, author6, author7, author8, author9, author10, author11)
 }

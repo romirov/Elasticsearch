@@ -19,6 +19,15 @@ import org.springframework.stereotype.Repository
 class ElasticNativeQueryRepo(
 	val elasticOperations: ElasticsearchOperations
 ) {
+
+	fun createIndex() {
+		elasticOperations.indexOps(Message::class.java).create()
+	}
+
+	fun deleteIndex() {
+		elasticOperations.indexOps(Message::class.java).delete()
+	}
+
 	private fun find(
 		indexName: String,
 		query: (Query.Builder) -> ObjectBuilder<Query>,

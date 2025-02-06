@@ -3,6 +3,8 @@ package com.marulab.elk.configuration
 import com.marulab.elk.configuration.properties.ElasticProp
 import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_NAME
 import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_PREFIX
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.TestConfiguration
@@ -24,5 +26,11 @@ class ElasticTestConfig(
 		.withBasicAuth(elasticsearchProperties.username, elasticsearchProperties.password)
 		.withConnectTimeout(elasticsearchProperties.connectionTimeout)
 		.withSocketTimeout(elasticsearchProperties.socketTimeout)
-		.build()
+		.build().also {
+			logger.info("HOST: ${container.host} PORT: ${container.firstMappedPort}")
+		}
+
+	companion object {
+		val logger: Logger = LoggerFactory.getLogger(this::class.java)
+	}
 }

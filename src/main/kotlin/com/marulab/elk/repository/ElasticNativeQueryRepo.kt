@@ -11,22 +11,14 @@ import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.data.elasticsearch.core.query.DeleteQuery
-import org.springframework.data.elasticsearch.core.query.UpdateQuery
 import org.springframework.stereotype.Repository
+import java.util.*
 
 
 @Repository
 class ElasticNativeQueryRepo(
 	val elasticOperations: ElasticsearchOperations
 ) {
-
-	fun createIndex() {
-		elasticOperations.indexOps(Message::class.java).create()
-	}
-
-	fun deleteIndex() {
-		elasticOperations.indexOps(Message::class.java).delete()
-	}
 
 	private fun find(
 		indexName: String,
@@ -52,18 +44,14 @@ class ElasticNativeQueryRepo(
 		return result
 	}
 
-	fun save(message: Message, indexName: String) {
+	fun save(message: Message, indexName: String): Message {
 		val index = IndexCoordinates.of(indexName)
-		elasticOperations.save(message, Message::class.java, index)
+		return elasticOperations.save(message, index)
 	}
 
 	fun update(message: Message, indexName: String) {
 		val index = IndexCoordinates.of(indexName)
-		val query = with(NativeQueryBuilder()) {
-			withQuery { builder -> builder.matchAll(MatchAllQuery.Builder().build()) }
-		}.build()
-		val updateQuery = UpdateQuery.builder(query).build()
-		elasticOperations.update(updateQuery, index)
+		elasticOperations.update(message, index).result
 	}
 
 	fun deleteAll(indexName: String) {
@@ -104,4 +92,14 @@ class ElasticNativeQueryRepo(
 			pageable = null,
 			sort = null
 		)
+
+	fun findById(id: UUID, indexName: String) =
+		find(
+			indexName = indexName,
+			query = { builder -> builder.queryString(QueryStringQuery.Builder().query(id.toString()).build()) },
+			filter = null,
+			fields = "id",
+			pageable = null,
+			sort = null
+		).single()
 }

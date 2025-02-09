@@ -8,6 +8,7 @@ import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate
 
 @Import(TestContainersConfig::class, ElasticTestConfig::class)
 @SpringBootTest
@@ -31,6 +32,9 @@ abstract class ElasticRepoTest {
 
 	@Autowired
 	lateinit var elasticStringQueryRepo: ElasticStringQueryRepo
+
+	@Autowired
+	lateinit var elasticsearchTemplate: ElasticsearchTemplate
 
 	fun getIndexName() = elasticProp.indexNamePattern
 }

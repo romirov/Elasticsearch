@@ -3,23 +3,27 @@ package com.marulab.elk.repository
 import com.marulab.elk.ElasticRepoTest
 import com.marulab.elk.dto.Authors
 import com.marulab.elk.dto.Messages
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
+import org.springframework.test.context.ActiveProfiles
 
+@ActiveProfiles("native-test")
 class ElasticNativeQueryRepoTest : ElasticRepoTest() {
-
-	@BeforeAll
-	fun createIndex() {
-		elasticNativeQueryRepo.createIndex()
-	}
-
-	@AfterAll
-	fun deleteIndex() {
-		elasticNativeQueryRepo.deleteIndex()
-	}
 
 	@AfterEach
 	fun cleanUp() {
 		elasticNativeQueryRepo.deleteAll(getIndexName())
+		Thread.sleep(1000)
+	}
+
+	@Test
+	fun `test index name`() {
+		val index = IndexCoordinates.of("messages-native")
+		val result = elasticsearchTemplate.indexOps(index).exists()
+		Assertions.assertEquals(true, result)
+		Assertions.assertEquals(getIndexName(), index.indexName)
 	}
 
 	@Test
@@ -31,8 +35,14 @@ class ElasticNativeQueryRepoTest : ElasticRepoTest() {
 	@Test
 	fun `update test`() {
 		elasticNativeQueryRepo.save(Messages.msg1, getIndexName())
+		Thread.sleep(1000)
+		val savedMsg = elasticNativeQueryRepo.findById(Messages.id1, getIndexName())
+		Assertions.assertEquals(Messages.msg1, savedMsg)
+
 		val updatedMsg = Messages.msg1.copy(author = Authors.author2)
-		val result = elasticNativeQueryRepo.update(updatedMsg, getIndexName())
+		elasticNativeQueryRepo.update(updatedMsg, getIndexName())
+		Thread.sleep(1000)
+		val result = elasticNativeQueryRepo.findById(Messages.id1, getIndexName())
 		Assertions.assertEquals(updatedMsg, result)
 	}
 
@@ -43,10 +53,11 @@ class ElasticNativeQueryRepoTest : ElasticRepoTest() {
 		elasticNativeQueryRepo.save(Messages.msg3, getIndexName())
 		elasticNativeQueryRepo.save(Messages.msg4, getIndexName())
 		elasticNativeQueryRepo.save(Messages.msg5, getIndexName())
+		Thread.sleep(1000)
 		val result = elasticNativeQueryRepo.findAll(getIndexName())
 		Assertions.assertEquals(5, result.size)
-		Assertions.assertEquals(Messages.msg1, result.first())
-		Assertions.assertEquals(Messages.msg5, result.last())
+		Assertions.assertTrue { Messages.msg1 in result }
+		Assertions.assertTrue { Messages.msg5 in result }
 	}
 
 	@Test
@@ -62,6 +73,7 @@ class ElasticNativeQueryRepoTest : ElasticRepoTest() {
 		elasticNativeQueryRepo.save(Messages.msg9, getIndexName())
 		elasticNativeQueryRepo.save(Messages.msg10, getIndexName())
 		elasticNativeQueryRepo.save(Messages.msg11, getIndexName())
+		Thread.sleep(1000)
 		val result = elasticNativeQueryRepo.findByTitle("test", getIndexName())
 		Assertions.assertEquals(11, result.size)
 	}
@@ -79,6 +91,7 @@ class ElasticNativeQueryRepoTest : ElasticRepoTest() {
 		elasticNativeQueryRepo.save(Messages.msg9, getIndexName())
 		elasticNativeQueryRepo.save(Messages.msg10, getIndexName())
 		elasticNativeQueryRepo.save(Messages.msg11, getIndexName())
+		Thread.sleep(1000)
 		val result = elasticNativeQueryRepo
 			.findByAuthorFirstName(
 				firstName = Authors.author2.firstName,

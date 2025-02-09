@@ -9,7 +9,7 @@ import java.util.*
 
 @Serializable
 @optics
-@Document(indexName = "#{spring.elasticsearch.indexNamePattern}")
+@Document(indexName = "#{@indexName}")
 @Setting(
 	sortFields = ["createdDate", "title"],
 	sortModes = [Setting.SortMode.max, Setting.SortMode.min],

@@ -5,6 +5,7 @@ import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_NAME
 import com.marulab.elk.util.Constants.CONDITIONAL_PROPERTY_PREFIX
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.elasticsearch.client.ClientConfiguration
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration
@@ -25,4 +26,7 @@ class ElasticConfig(
 		.withConnectTimeout(elasticsearchProperties.connectionTimeout)
 		.withSocketTimeout(elasticsearchProperties.socketTimeout)
 		.build()
+
+	@Bean
+	fun indexName(): String = elasticsearchProperties.indexNamePattern
 }

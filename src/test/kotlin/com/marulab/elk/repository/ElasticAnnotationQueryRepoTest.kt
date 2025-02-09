@@ -8,12 +8,21 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 
 class ElasticAnnotationQueryRepoTest : ElasticRepoTest() {
 
 	@AfterEach
 	fun cleanUp() {
 		elasticAnnotationQueryRepo.deleteAll()
+	}
+
+	@Test
+	fun `test index name`() {
+		val result = elasticsearchTemplate.indexOps(
+			IndexCoordinates.of("messages")
+		).exists()
+		Assertions.assertEquals(true, result)
 	}
 
 	@Test

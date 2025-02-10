@@ -29,13 +29,13 @@ class ElasticCriteriaQueryRepo(
 
 	fun findByIdAndIndexName(id: UUID, indexName: String): Message =
 		execByCriteriaAndIndexName(
-			criteria = Criteria("id").matchesAll(id),
+			criteria = Criteria(QueryFields.ID.value).matchesAll(id),
 			indexName = indexName
 		).single()
 
 	fun findBetweenDatesAndIndexName(lowerBound: LocalDateTime, upperBound: LocalDateTime, indexName: String): List<Message> =
 		execByCriteriaAndIndexName(
-			Criteria.where("createdDate").between(lowerBound, upperBound),
+			Criteria.where(QueryFields.CREATED_DATE.value).between(lowerBound, upperBound),
 			indexName
 		)
 
@@ -49,5 +49,12 @@ class ElasticCriteriaQueryRepo(
 				resultList.add(searchHitsIterator.next().content)
 		}
 		return resultList
+	}
+
+	companion object {
+		enum class QueryFields(val value: String){
+			ID("id"),
+			CREATED_DATE("createdDate"),
+		}
 	}
 }

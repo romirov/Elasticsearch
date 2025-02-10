@@ -78,7 +78,7 @@ class ElasticNativeQueryRepo(
 			indexName = indexName,
 			query = { builder -> builder.queryString(QueryStringQuery.Builder().fields("author.firstName").query(firstName).build()) },
 			filter = null,
-			fields = "author.firstName",
+			fields = QueryFields.AUTHOR_FIRST_NAME.value,
 			pageable = null,
 			sort = null
 		)
@@ -88,7 +88,7 @@ class ElasticNativeQueryRepo(
 			indexName = indexName,
 			query = { builder -> builder.queryString(QueryStringQuery.Builder().fields("title").query(title).build()) },
 			filter = null,
-			fields = "title",
+			fields = QueryFields.TITLE.value,
 			pageable = null,
 			sort = null
 		)
@@ -98,8 +98,16 @@ class ElasticNativeQueryRepo(
 			indexName = indexName,
 			query = { builder -> builder.queryString(QueryStringQuery.Builder().query(id.toString()).build()) },
 			filter = null,
-			fields = "id",
+			fields = QueryFields.ID.value,
 			pageable = null,
 			sort = null
 		).single()
+
+	companion object {
+		enum class QueryFields(val value: String){
+			ID("id"),
+			TITLE("title"),
+			AUTHOR_FIRST_NAME("author.firstName"),
+		}
+	}
 }

@@ -4,7 +4,6 @@ import com.marulab.elk.configuration.ElasticTestConfig
 import com.marulab.elk.configuration.TestContainersConfig
 import com.marulab.elk.configuration.properties.ElasticProp
 import com.marulab.elk.repository.*
-import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -12,7 +11,6 @@ import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate
 
 @Import(TestContainersConfig::class, ElasticTestConfig::class)
 @SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class ElasticRepoTest {
 
 	@Autowired

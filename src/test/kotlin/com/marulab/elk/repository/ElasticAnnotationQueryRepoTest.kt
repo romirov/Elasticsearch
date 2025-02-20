@@ -7,10 +7,12 @@ import com.marulab.elk.dto.Messages
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 
-class ElasticAnnotationQueryRepoTest : ElasticRepoTest() {
+@SpringBootTest
+class ElasticAnnotationQueryRepoTest: ElasticRepoTest() {
 
 	@AfterEach
 	fun cleanUp() {

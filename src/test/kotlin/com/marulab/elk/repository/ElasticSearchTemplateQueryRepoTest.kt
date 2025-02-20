@@ -7,20 +7,18 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.test.context.ActiveProfiles
-import java.time.LocalDateTime
 
-@ActiveProfiles("criteria-test")
-class ElasticCriteriaQueryRepoTest : ElasticRepoTest() {
-
+@ActiveProfiles("template-test")
+class ElasticSearchTemplateQueryRepoTest : ElasticRepoTest() {
 	@AfterEach
 	fun cleanUp() {
 		Thread.sleep(1000)
-		elasticCriteriaQueryRepo.deleteAll(getIndexName())
+		elasticSearchTemplateQueryRepo.deleteAll(getIndexName())
 	}
 
 	@Test
 	fun `test index name`() {
-		val index = IndexCoordinates.of("messages-criteria")
+		val index = IndexCoordinates.of("messages-template")
 		val result = elasticsearchTemplate.indexOps(index).exists()
 		Assertions.assertEquals(true, result)
 		Assertions.assertEquals(getIndexName(), index.indexName)
@@ -28,7 +26,7 @@ class ElasticCriteriaQueryRepoTest : ElasticRepoTest() {
 
 	@Test
 	fun `save test`() {
-		val result = elasticCriteriaQueryRepo.save(Messages.msg1, getIndexName())
+		val result = elasticSearchTemplateQueryRepo.save(Messages.msg1, getIndexName())
 		Assertions.assertEquals(Messages.msg1, result)
 	}
 
@@ -40,23 +38,7 @@ class ElasticCriteriaQueryRepoTest : ElasticRepoTest() {
 		elasticCriteriaQueryRepo.save(Messages.msg4, getIndexName())
 		elasticCriteriaQueryRepo.save(Messages.msg5, getIndexName())
 		Thread.sleep(1000)
-		val result = elasticCriteriaQueryRepo.findByIdAndIndexName(Messages.msg4.id, getIndexName())
+		val result = elasticSearchTemplateQueryRepo.findById(Messages.msg4.id, getIndexName())
 		Assertions.assertEquals(Messages.msg4, result)
-	}
-
-	@Test
-	fun `findBetweenDatesAndIndexName test`() {
-		elasticCriteriaQueryRepo.save(Messages.msg1, getIndexName())
-		elasticCriteriaQueryRepo.save(Messages.msg2, getIndexName())
-		elasticCriteriaQueryRepo.save(Messages.msg3, getIndexName())
-		elasticCriteriaQueryRepo.save(Messages.msg4, getIndexName())
-		elasticCriteriaQueryRepo.save(Messages.msg5, getIndexName())
-		Thread.sleep(1000)
-		val result = elasticCriteriaQueryRepo.findBetweenDatesAndIndexName(
-			lowerBound = LocalDateTime.parse("2019-12-31T00:00:00"),
-			upperBound = LocalDateTime.parse("2020-01-02T00:00:00"),
-			indexName = getIndexName()
-		)
-		Assertions.assertEquals(Messages.msg1, result.single())
 	}
 }

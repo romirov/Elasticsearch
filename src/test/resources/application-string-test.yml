@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: Elasticsearch
+  elasticsearch:
+    enabled: true
+    url: ${ELASTICSEARCH_URL:http://localhost:9200}
+    username: ${ELASTICSEARCH_USERNAME:elastic}
+    password: ${ELASTICSEARCH_PASSWORD:password}
+    connectionTimeout: 30
+    socketTimeout: 30
+    indexNamePattern: messages-string

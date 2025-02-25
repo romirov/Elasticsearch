@@ -35,7 +35,7 @@ dependencies {
 	implementation("io.arrow-kt:arrow-fx-coroutines:2.0.0")
 	implementation("io.arrow-kt:arrow-optics:2.0.0")
 	ksp("io.arrow-kt:arrow-optics-ksp-plugin:2.0.0")
-
+	implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
 	ksp("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
